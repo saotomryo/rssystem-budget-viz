@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>使い方 - 行政事業レビュー 見える化</title>
+    <style>
+      :root {
+        --bg: #f6f7f9;
+        --card: #ffffff;
+        --ink: #1f2937;
+        --muted: #6b7280;
+        --line: #e5e7eb;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+      }
+      header {
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--line);
+        background: #fff;
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        justify-content: space-between;
+      }
+      h1 { margin: 0; font-size: 18px; }
+      .nav a {
+        color: var(--ink);
+        text-decoration: none;
+        border: 1px solid var(--line);
+        padding: 8px 10px;
+        border-radius: 10px;
+        background: #fff;
+        font-size: 12px;
+      }
+      main { padding: 20px 24px 40px; max-width: 980px; margin: 0 auto; }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      h2 { margin: 0 0 10px; font-size: 16px; }
+      p, li { font-size: 14px; line-height: 1.6; }
+      .note { color: var(--muted); font-size: 12px; }
+      code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+      pre { background: #0b1020; color: #e5e7eb; padding: 12px; border-radius: 10px; overflow: auto; }
+      pre code { color: inherit; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>使い方 - 行政事業レビュー 見える化（2-2 歳出予算項目）</h1>
+        <div class="note">GitHub Pages上で動作する静的Webアプリです（CSVは手動アップロード）。</div>
+      </div>
+      <nav class="nav">
+        <a href="./">アプリに戻る</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="card">
+        <h2>1. CSVの入手とアップロード（2-2 歳出項目）</h2>
+        <ol>
+          <li><a href="https://rssystem.go.jp/download-csv" target="_blank" rel="noopener noreferrer">RSシステム</a>のCSVダウンロードページを開きます。</li>
+          <li>「2-2 予算・執行_予算種別・歳出予算項目」のCSVをダウンロードします。</li>
+          <li>本アプリ（index.html）を開き、画面上部の「CSVファイル」からダウンロードしたCSVを選択します。</li>
+        </ol>
+        <p class="note">ダウンロード元: <a href="https://rssystem.go.jp/download-csv" target="_blank" rel="noopener noreferrer">https://rssystem.go.jp/download-csv</a></p>
+      </section>
+
+      <section class="card">
+        <h2>データ留意点</h2>
+        <p>データの性質・制約（事業数=シート数、丸め、移行データの差異など）は、公式の留意事項に従って解釈してください。</p>
+        <p class="note"><a href="https://rssystem.go.jp/notice" target="_blank" rel="noopener noreferrer">https://rssystem.go.jp/notice</a></p>
+      </section>
+
+      <section class="card">
+        <h2>2. 分類プリセットの使い方</h2>
+        <p>画面上部の「分類プリセット」から、表示したい切り口を選択できます。</p>
+        <p class="note">プリセット一覧（現在の全項目）</p>
+        <ul>
+          <li><strong>選択なし</strong>: 分類JSONを使わず、簡易ルールで分類します。</li>
+          <li><strong>省庁別（JSON不要）</strong>: CSVの <code>府省庁</code> 列をそのままカテゴリとして表示します。</li>
+          <li><strong>初期分類</strong>: 事業名の簡易キーワード分類をベースにしたプリセットです。</li>
+          <li><strong>福祉細分（医療/子育て/介護/年金）</strong>: 「福祉」を医療/子育て/介護/年金/その他福祉に分けます。</li>
+          <li><strong>3軸分類（未来/社会維持/経済対策）</strong>: 未来投資・社会維持・経済対策の3分類で俯瞰します。</li>
+          <li><strong>少子高齢化対応（高齢者/子ども・子育て/現役世代支援）</strong>: 少子高齢化の切り口で分類します（学生支援は子ども・子育て側に寄せています）。</li>
+          <li><strong>人口×地域（地方創生/インフラ維持/防災・減災）</strong>: 地方創生・インフラ維持・防災の切り口で分類します。</li>
+          <li><strong>産業政策の色（中小企業/GX/技術・デジタル/通商・観光）</strong>: 産業政策をざっくり分解して見ます。</li>
+          <li><strong>安全保障の広がり（防衛/治安・サイバー/外交・ODA/経済安保）</strong>: 安全保障を防衛だけでなく、治安・外交・経済安保まで含めて分類します。</li>
+          <li><strong>政策の性格（給付/サービス/インフラ/行政）</strong>: 給付・サービス提供・インフラ・制度/行政運営の性格で分類します。</li>
+        </ul>
+        <p>プリセットを選ぶと、年度別の積み上げ棒グラフと「カテゴリ別 上位事業（トップN）」が同じ分類軸で表示されます。</p>
+        <p class="note">凡例はチェックボックスになっており、チェックを外すとそのカテゴリをグラフから非表示にできます。</p>
+      </section>
+
+      <section class="card">
+        <h2>3. AIで分類JSONを生成（OpenAI / Google Gemini）</h2>
+        <p>画面下部の「AIで分類JSONを生成」から、事業名をカテゴリに分類するJSONを作れます。</p>
+        <p class="note">注意: 分類は事業名などのテキストから推測して行うため、不正確な場合があります（必ず元データの内容も確認してください）。</p>
+        <ol>
+          <li>プロバイダ（OpenAI / Google Gemini）を選択</li>
+          <li>モデル名を入力</li>
+          <li>APIキーを入力</li>
+          <li>必要に応じてカテゴリ一覧を編集</li>
+          <li>「分類JSONを生成」→「生成結果を適用」→「JSONをダウンロード」</li>
+        </ol>
+
+        <h3 style="margin:14px 0 8px;font-size:14px;">モデル名の例</h3>
+        <ul>
+          <li>OpenAI: <code>gpt-4o-mini</code>（例）</li>
+          <li>Gemini: <code>models/gemini-1.5-flash</code>（例）</li>
+        </ul>
+
+        <h3 style="margin:14px 0 8px;font-size:14px;">APIキーの入手（簡易）</h3>
+        <ul>
+          <li>OpenAI: OpenAI PlatformでAPIキーを発行します。</li>
+          <li>Gemini: Google AI Studio（またはGoogle Cloud側）でAPIキーを発行します。</li>
+        </ul>
+        <p class="note">
+          重要: GitHub Pagesのような静的サイトでAPIキーを入力すると、ブラウザ上でキーが扱われます。
+          共有PCや画面共有、拡張機能、ネットワークログ等の環境によっては漏洩リスクがあります。
+          安全に運用する場合は、サーバー/Workerを挟んでキーを隠す構成を検討してください。
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

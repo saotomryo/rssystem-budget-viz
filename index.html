@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>2-2 予算種別・歳出予算項目 グラフ</title>
+    <title>行政事業レビュー 見える化（2-2 歳出予算項目）</title>
     <style>
       :root {
         --bg: #f6f7f9;
@@ -182,8 +182,11 @@
   </head>
   <body>
     <header>
-      <h1>2-2 予算種別・歳出予算項目 グラフ</h1>
-      <div class="sub">データ: `2-2_RS_2025_予算・執行_予算種別・歳出予算項目.csv`（金額単位: 円）</div>
+      <h1>行政事業レビュー 見える化（2-2 歳出予算項目）</h1>
+      <div class="sub">2-2「予算種別・歳出予算項目」CSVをアップロードして可視化します（単位: 円）。</div>
+      <div style="display:flex;gap:12px;align-items:center;justify-content:flex-start;margin-top:10px;">
+        <a href="./guide.html" style="text-decoration:none;border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px;background:#fff;color:#1f2937;font-size:12px;">使い方</a>
+      </div>
     </header>
     <main class="grid">
       <section class="card">
@@ -191,6 +194,11 @@
           <div>
             <label for="fileInput">CSVファイル</label>
             <input id="fileInput" type="file" accept=".csv" />
+            <div class="note" style="margin-top:6px;color:#b45309;">
+              まずは <a href="./guide.html" style="color:#b45309;font-weight:700;text-decoration:underline;">使い方</a> を参照して、
+              <a href="https://rssystem.go.jp/download-csv" target="_blank" rel="noopener noreferrer" style="color:#b45309;font-weight:700;text-decoration:underline;">RSシステム</a>
+              から <strong>2-2（歳出予算項目）CSV</strong> を入手してアップロードしてください。
+            </div>
           </div>
           <div>
             <label for="presetSelect">分類プリセット</label>
@@ -297,12 +305,15 @@
           <summary class="note" style="cursor:pointer;">詳細ログ（エラーや進捗の確認）</summary>
           <pre id="genLog" style="margin-top:8px;max-height:240px;overflow:auto;background:#0b1020;color:#e5e7eb;padding:12px;border-radius:10px;"></pre>
         </details>
+        <p class="note">注意: 分類は事業名などのテキストから推測して行うため、不正確な場合があります。</p>
         <p class="note">注意: GitHub Pagesのような静的サイトでAPIキーを使うとキーが露出します。自己責任で使用してください。</p>
       </section>
     </main>
 
     <script>
-      const CSV_PATH = "データ/2-2_RS_2025_予算・執行_予算種別・歳出予算項目.csv";
+      // GitHub Pages等での静的配信を前提に、CSVは手動アップロードが基本。
+      // ローカルで同梱データを自動読み込みしたい場合だけパスを設定する。
+      const CSV_PATH = null;
       const fileInput = document.getElementById("fileInput");
       const ministrySelect = document.getElementById("ministrySelect");
       const accountSelect = document.getElementById("accountSelect");
@@ -765,6 +776,7 @@
             logLine(`Chunk ${i + 1}/${chunks.length}: ${msg}`);
             clearInterval(heartbeat);
             cancelBtn.disabled = true;
+            // Allow user to download partial results for debugging.
             if (Object.keys(generatedMap).length > 0) {
               downloadBtn.disabled = false;
             }
@@ -991,13 +1003,17 @@
         URL.revokeObjectURL(url);
       });
 
-      fetch(CSV_PATH)
-        .then(r => r.text())
-        .then(loadText)
-        .catch(err => {
-          genStatus.textContent = "CSVの読み込みに失敗しました。ファイル選択で読み込んでください。";
-          console.error(err);
-        });
+      if (CSV_PATH) {
+        fetch(CSV_PATH)
+          .then(r => r.text())
+          .then(loadText)
+          .catch(err => {
+            genStatus.textContent = "CSVの読み込みに失敗しました。ファイル選択で読み込んでください。";
+            console.error(err);
+          });
+      } else {
+        genStatus.textContent = "CSVファイルをアップロードしてください。";
+      }
     </script>
   </body>
 </html>
