@@ -31,18 +31,18 @@ GitHub Pagesでの公開を前提に、**CSVは利用者が手動アップロー
 }
 ```
 
-現在のプリセット例:
-- `ai_classification_map.json`
-- `ai_classification_map_welfare_split.json`
-- `ai_classification_map_3axis.json`
-- `ai_classification_map_demography.json`
-- `ai_classification_map_region.json`
-- `ai_classification_map_industrial_policy.json`
-- `ai_classification_map_security.json`
-- `ai_classification_map_policy_character.json`
+現在のプリセット例（`JSON/` 配下）:
+- `JSON/ai_classification_map.json`
+- `JSON/ai_classification_map_welfare_split.json`
+- `JSON/ai_classification_map_3axis.json`
+- `JSON/ai_classification_map_demography.json`
+- `JSON/ai_classification_map_region.json`
+- `JSON/ai_classification_map_industrial_policy.json`
+- `JSON/ai_classification_map_security.json`
+- `JSON/ai_classification_map_policy_character.json`
 
 追加する場合:
-1. `ai_classification_map_*.json` を追加
+1. `JSON/ai_classification_map_*.json` を追加
 2. `index.html` の `PRESET_JSONS` に追記
 
 ## データ（CSV）について
@@ -69,6 +69,5 @@ python -m http.server 8000
 
 ## ファイル
 - `index.html` : GitHub Pages用のエントリ（メイン画面）
-- `2-2.html` : 開発用に残している同等ページ（必要なら削除してOK）
-- `ai_classification_map_*.json` : 分類プリセット
+- `JSON/ai_classification_map_*.json` : 分類プリセット
 - `仕様策定.md` : 仕様メモ
